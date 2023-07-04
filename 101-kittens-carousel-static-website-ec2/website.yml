@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  A kittens carousel website, including ec2 instance and security group
+  
+Resources:
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow SSH and HTTP" # Required
+      SecurityGroupIngress: 
+        - CidrIp: 0.0.0.0/0
+          FromPort: 22
+          IpProtocol: tcp # Required
+          ToPort: 22
+        - CidrIp: 0.0.0.0/0
+          FromPort: 80
+          IpProtocol: tcp # Required
+          ToPort: 80
+
+  MyWebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-06b09bfacae1453cb
+      InstanceType: t2.micro
+      KeyName: mehmet-key
+      SecurityGroupIds: 
+        - !Ref MySecurityGroup
+      Tags: 
+      - Key: Name
+        Value: Mehmet Kittens Web Server
+      UserData: 
+        Fn::Base64:
+          |
+            #!/bin/bash -x
+            yum update -y
+            yum install httpd -y
+            cd /var/www/html
+            FOLDER="https://raw.githubusercontent.com/mehmath89/my-repository-3/main/101-kittens-carousel-static-website-ec2/static-web/"
+            wget ${FOLDER}index.html
+            wget ${FOLDER}cat0.jpg
+            wget ${FOLDER}cat1.jpg
+            wget ${FOLDER}cat2.jpg
+            systemctl start httpd
+            systemctl enable httpd

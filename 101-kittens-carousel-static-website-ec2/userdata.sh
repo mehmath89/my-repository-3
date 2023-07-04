@@ -2,9 +2,10 @@
 yum update -y
 yum install httpd -y
 cd /var/www/html
-wget https://raw.githubusercontent.com/mehmath89/my-repository-3/main/101-kittens-carousel-static-website-ec2/static-web/index.html
-wget https://raw.githubusercontent.com/mehmath89/my-repository-3/main/101-kittens-carousel-static-website-ec2/static-web/cat0.jpg
-wget https://raw.githubusercontent.com/mehmath89/my-repository-3/main/101-kittens-carousel-static-website-ec2/static-web/cat1.jpg
-wget https://raw.githubusercontent.com/mehmath89/my-repository-3/main/101-kittens-carousel-static-website-ec2/static-web/cat2.jpg
-
+FOLDER="https://raw.githubusercontent.com/mehmath89/my-repository-3/main/101-kittens-carousel-static-website-ec2/static-web/"
+wget ${FOLDER}index.html
+wget ${FOLDER}cat0.jpg
+wget ${FOLDER}cat1.jpg
+wget ${FOLDER}cat2.jpg
 systemctl start httpd
+systemctl enable httpd
